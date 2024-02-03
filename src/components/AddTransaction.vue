@@ -18,10 +18,26 @@
 
 <script setup>
 import { ref } from 'vue';
- const text = ref('');
- const amount = ref('');
+import {useToast} from 'vue-toastification';
+ 
+const text = ref('');
+const amount = ref('');
+const emit = defineEmits(['transactionSubmitted'])
+const toast = useToast();
 
 const onSubmit = () => {
-  console.log(text.value);
+  if(!text.value || !amount.value) {
+    toast.error("Empty Fields")
+  }
+
+  const transactionData = {
+    text: text.value,
+    amount: parseFloat(amount.value)
+  }
+
+  emit('transactionSubmitted', transactionData)
+
+  text.value='';
+  amount.value='';
 };
 </script>
